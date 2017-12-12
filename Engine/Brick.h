@@ -8,7 +8,8 @@ class Brick
 public:
 	Brick(RectF& in_rect, const Color in_color);
 	void Draw(Graphics& gfx) const;
-public:
+	void Destroy();
+private:
 	RectF rect;
 	Color color;
 	bool destroyed = false;
