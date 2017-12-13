@@ -20,11 +20,15 @@
  ******************************************************************************************/
 #include "MainWindow.h"
 #include "Game.h"
+#include "Vec2.h"
 
-Game::Game( MainWindow& wnd )
+Game::Game(MainWindow& wnd)
 	:
-	wnd( wnd ),
-	gfx( wnd )
+	wnd(wnd),
+	gfx(wnd),
+	walls(0.0f, (float)gfx.ScreenWidth, 0.0f, (float)gfx.ScreenHeight),
+	a_ball(Vec2(240.0f, 240.0f), Vec2(300.0f, -300.0f))
+	
 {
 }
 
@@ -38,8 +42,12 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	const float dt = ft.Mark();
+	a_ball.Update(dt);
+	a_ball.DoWallCollision(walls);
 }
 
 void Game::ComposeFrame()
 {
+	a_ball.Draw(gfx);
 }
