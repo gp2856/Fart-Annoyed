@@ -7,6 +7,7 @@
 class Brick
 {
 public:
+	Brick() = default;
 	Brick(RectF& in_rect, const Color in_color);
 	void Draw(Graphics& gfx) const;
 	void Destroy();
