@@ -25,12 +25,22 @@ void Paddle::Update(const Keyboard & kbd, const float dt)
 
 void Paddle::Draw(Graphics & gfx) const
 {
-	gfx.DrawRect(GetRect(), c);
+	RectF rect = GetRect();
+	rect.left -= wingWidth;
+	rect.right += wingWidth;
+
+	gfx.DrawRect(rect, wingColor);
+
+	rect.left += wingWidth;
+	rect.right -= wingWidth;
+	gfx.DrawRect(rect, c);
 }
 
 void Paddle::DoBallCollision(Ball & ball) const
 {
-	const RectF rect = GetRect();
+	RectF rect = GetRect();
+	rect.left -= wingWidth;
+	rect.right += wingWidth;
 	if (rect.IsOverlappingWith(ball.GetRect()) && ball.GetVelocity().y >= 0)
 	{
 		ball.ReboundY();
@@ -39,7 +49,9 @@ void Paddle::DoBallCollision(Ball & ball) const
 
 void Paddle::DoWallCollision(const RectF & walls)
 {
-	const RectF rect = GetRect();
+	RectF rect = GetRect();
+	rect.left -= wingWidth;
+	rect.right += wingWidth;
 	if (rect.left <= walls.left)
 	{
 		pos.x += walls.left - rect.left;
