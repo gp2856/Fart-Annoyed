@@ -31,6 +31,22 @@ Game::Game(MainWindow& wnd)
 	paddle(Vec2((Graphics::ScreenWidth / 2), (Graphics::ScreenHeight - 100)), 50, 10, Colors::White, 8.0f, Colors::Red)
 	
 {
+	const Color colors[4] = { Colors::Red, Colors::Green, Colors::Blue, Colors::Cyan };
+
+	const Vec2 topLeft(0.0f, 0.0f);
+	int i = 0;
+
+	for (int y = 0; y < nBricksDown; y++)
+	{
+		const Color c = colors[y];
+		for (int x = 0; x < nBricksAcross; x++)
+		{
+			bricks[i] = Brick(RectF(
+				topLeft + Vec2(x * brickWidth, y * brickHeight), 
+				brickWidth, brickHeight ), c);
+			i++;
+		}
+	}
 }
 
 void Game::Go()
@@ -49,10 +65,23 @@ void Game::UpdateModel()
 	paddle.Update(wnd.kbd, dt);
 	paddle.DoBallCollision(a_ball);
 	paddle.DoWallCollision(walls);
+
+	for (Brick& b : bricks)
+	{
+		if(b.DoBallCollision(a_ball))
+		{
+			break;
+		}
+	}
 }
 
 void Game::ComposeFrame()
 {
 	a_ball.Draw(gfx);
 	paddle.Draw(gfx);
+
+	for (const Brick& b : bricks)
+	{
+		b.Draw(gfx);
+	}
 }

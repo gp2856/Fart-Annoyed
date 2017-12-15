@@ -26,6 +26,7 @@
 #include "FrameTimer.h"
 #include "Ball.h"
 #include "Paddle.h"
+#include "Brick.h"
 
 class Game
 {
@@ -50,5 +51,12 @@ private:
 	RectF walls;
 	Ball a_ball;
 	Paddle paddle;
+
+	static constexpr int nBricksAcross = 12;
+	static constexpr int nBricksDown = 4;
+	static constexpr int nBricks = nBricksAcross * nBricksDown;
+	static constexpr float brickWidth = 40.0f;
+	static constexpr float brickHeight = 24.0f;
 	
+	Brick bricks[nBricks];
 };

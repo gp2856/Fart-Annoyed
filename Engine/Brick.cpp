@@ -20,11 +20,12 @@ void Brick::Destroy()
 	destroyed = true;
 }
 
-void Brick::DoBallCollision(Ball & ball)
+bool Brick::DoBallCollision(Ball & ball)
 {
 	if (rect.IsOverlappingWith(ball.GetRect()))
 	{
 		ball.ReboundY();
 		destroyed = true;
 	}
+	return destroyed;
 }

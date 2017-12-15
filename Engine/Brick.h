@@ -11,7 +11,7 @@ public:
 	Brick(RectF& in_rect, const Color in_color);
 	void Draw(Graphics& gfx) const;
 	void Destroy();
-	void DoBallCollision(Ball& ball);
+	bool DoBallCollision(Ball& ball);
 private:
 	RectF rect;
 	Color color;
