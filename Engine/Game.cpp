@@ -27,7 +27,6 @@ Game::Game(MainWindow& wnd)
 	wnd(wnd),
 	gfx(wnd),
 	walls(0.0f, (float)gfx.ScreenWidth, 0.0f, (float)gfx.ScreenHeight),
-	a_brick(RectF(Vec2(240,240), 90.0f, 30.0f), Colors::Red),
 	a_ball(Vec2(240.0f, 240.0f), Vec2(300.0f, -300.0f))
 	
 {
@@ -45,12 +44,10 @@ void Game::UpdateModel()
 {
 	const float dt = ft.Mark();
 	a_ball.Update(dt);
-	a_brick.DoBallCollision(a_ball);
 	a_ball.DoWallCollision(walls);
 }
 
 void Game::ComposeFrame()
 {
 	a_ball.Draw(gfx);
-	a_brick.Draw(gfx);
 }
