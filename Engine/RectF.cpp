@@ -33,5 +33,5 @@ bool RectF::IsOverlappingWith(const RectF & other) const
 
 RectF RectF::GetExpanded(const float offset) const
 {
-	return RectF(left + offset, right + offset, top + offset, bottom + offset);
+	return RectF(left - offset, right + offset, top - offset, bottom + offset);
 }

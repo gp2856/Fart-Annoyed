@@ -16,5 +16,6 @@ private:
 	RectF rect;
 	Color color;
 	bool destroyed = false;
+	static constexpr float offset = 3.0f;
 
 };
