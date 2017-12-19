@@ -3,6 +3,8 @@
 #include "Colors.h"
 #include "Graphics.h"
 #include "Ball.h"
+#include "Vec2.h"
+
 
 class Brick
 {
@@ -11,7 +13,11 @@ public:
 	Brick(RectF& in_rect, const Color in_color);
 	void Draw(Graphics& gfx) const;
 	void Destroy();
-	bool DoBallCollision(Ball& ball);
+	bool CheckBallCollision(Ball& ball) const;
+	void ExecuteBallCollision(Ball& ball);
+	bool IsDestroyed() const;
+	Vec2 GetCenter() const;
+
 private:
 	RectF rect;
 	Color color;

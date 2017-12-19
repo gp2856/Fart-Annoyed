@@ -27,6 +27,7 @@
 #include "Ball.h"
 #include "Paddle.h"
 #include "Brick.h"
+#include "Sound.h"
 
 class Game
 {
@@ -37,7 +38,7 @@ public:
 	void Go();
 private:
 	void ComposeFrame();
-	void UpdateModel();
+	void UpdateModel(const float dt);
 	/********************************/
 	/*  User Functions              */
 	/********************************/
@@ -48,9 +49,12 @@ private:
 	/*  User Variables              */
 	/********************************/
 	FrameTimer ft;
+	int score;
 	RectF walls;
 	Ball a_ball;
 	Paddle paddle;
+	Sound brickSound;
+	Sound padSound;
 
 	static constexpr int nBricksAcross = 12;
 	static constexpr int nBricksDown = 4;
