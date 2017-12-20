@@ -112,8 +112,8 @@ void Game::UpdateModel(float dt)
 		{
 			bricks[cur_col_index].ExecuteBallCollision(a_ball);
 			brickSound.Play();
-			paddle.reset_cooldown();
 		}
+		paddle.reset_cooldown();
 	}
 }
 
