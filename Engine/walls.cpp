@@ -4,8 +4,8 @@ wall::wall(const float x, const float y)
 {
 	bounds_.top = y;
 	bounds_.left = x;
-	bounds_.bottom = bounds_.top + (border_width + border_padding) * 2 + (height * dimension);
-	bounds_.right = bounds_.left + (border_width + border_padding) * 2 + (width * dimension);
+	bounds_.bottom = bounds_.top + (border_width + border_padding) * 2 + (height);
+	bounds_.right = bounds_.left + (border_width + border_padding) * 2 + (width);
 }
 
 RectF wall::get_inner_bounds() const

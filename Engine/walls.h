@@ -14,7 +14,7 @@ private:
 	static constexpr Color border_color = Colors::Blue;
 	static constexpr float border_width = 4.0f;
 	static constexpr float border_padding = 2.0f;
-	static constexpr int width = 24;
-	static constexpr int height = 24;
-	static constexpr int dimension = 10;
+	static constexpr int width = 470;
+	static constexpr int height = 480;
+	
 };

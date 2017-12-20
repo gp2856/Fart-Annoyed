@@ -26,8 +26,8 @@ Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
-	walls(0.0f, (float)gfx.ScreenWidth, 0.0f, (float)gfx.ScreenHeight),
-	a_ball(Vec2(240.0f, 240.0f), Vec2(300.0f, -300.0f)),
+	walls_(150.0f, 70.0f),
+	a_ball(Vec2((Graphics::ScreenWidth / 2), (Graphics::ScreenHeight - 100) - 100), Vec2(300.0f, -300.0f)),
 	paddle(Vec2((Graphics::ScreenWidth / 2), (Graphics::ScreenHeight - 100)), 50, 10, Colors::White, 8.0f, Colors::Red),
 	brickSound(L"Sounds\\arkbrick.wav"),
 	padSound(L"Sounds\\arkpad.wav")
@@ -35,7 +35,7 @@ Game::Game(MainWindow& wnd)
 {
 	const Color colors[4] = { Colors::Red, Colors::Green, Colors::Blue, Colors::Cyan };
 
-	const Vec2 topLeft(100.0f, 100.0f);
+	const Vec2 topLeft(150.0f, 70.0f);
 	int i = 0;
 
 	for (int y = 0; y < nBricksDown; y++)
@@ -71,7 +71,7 @@ void Game::UpdateModel(float dt)
 	{
 		a_ball.Update(dt);
 		paddle.Update(wnd.kbd, dt);
-		if (a_ball.DoWallCollision(walls) == 3)
+		if (a_ball.DoWallCollision(walls_.get_inner_bounds()) == 3)
 		{
 			game_over_ = true;
 		}
@@ -79,7 +79,7 @@ void Game::UpdateModel(float dt)
 		{
 			padSound.Play();
 		}
-		paddle.DoWallCollision(walls);
+		paddle.DoWallCollision(walls_.get_inner_bounds());
 
 
 		bool collision_happened = false;
@@ -111,8 +111,8 @@ void Game::UpdateModel(float dt)
 		if (collision_happened)
 		{
 			bricks[cur_col_index].ExecuteBallCollision(a_ball);
-			score += 10;
 			brickSound.Play();
+			paddle.reset_cooldown();
 		}
 	}
 }
@@ -121,7 +121,7 @@ void Game::ComposeFrame()
 {
 	a_ball.Draw(gfx);
 	paddle.Draw(gfx);
-
+	walls_.draw_wall(gfx);
 	for (const Brick& b : bricks)
 	{
 		b.Draw(gfx);
