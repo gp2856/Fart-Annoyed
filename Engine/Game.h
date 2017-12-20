@@ -61,6 +61,8 @@ private:
 	static constexpr int nBricks = nBricksAcross * nBricksDown;
 	static constexpr float brickWidth = 40.0f;
 	static constexpr float brickHeight = 24.0f;
-	
 	Brick bricks[nBricks];
+
+	bool game_over_ = false;
+	int collision_type_ = -1;
 };
