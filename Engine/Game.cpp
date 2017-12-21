@@ -21,6 +21,7 @@
 #include "MainWindow.h"
 #include "Game.h"
 #include "Vec2.h"
+#include "SpriteCodex.h"
 
 Game::Game(MainWindow& wnd)
 	:
@@ -67,63 +68,81 @@ void Game::Go()
 
 void Game::UpdateModel(float dt)
 {
-	if (!game_over_)
+		if (wnd.kbd.KeyIsPressed(VK_RETURN))
+		{
+			game_is_started_ = true;
+		}
+	if (game_is_started_)
 	{
-		a_ball.Update(dt);
-		paddle.Update(wnd.kbd, dt);
-		if (a_ball.DoWallCollision(walls_.get_inner_bounds()) == 3)
+		if (!game_over_)
 		{
-			game_over_ = true;
-		}
-		if (paddle.DoBallCollision(a_ball))
-		{
-			padSound.Play();
-		}
-		paddle.DoWallCollision(walls_.get_inner_bounds());
-
-
-		bool collision_happened = false;
-		float cur_col_dist_sq;
-		int cur_col_index;
-
-		for (int i = 0; i < nBricks; i++)
-		{
-			if (bricks[i].CheckBallCollision(a_ball))
+			a_ball.Update(dt);
+			paddle.Update(wnd.kbd, dt);
+			if (a_ball.DoWallCollision(walls_.get_inner_bounds()) == 3)
 			{
-				const float new_col_dist_sq = (a_ball.GetPos() - bricks[i].GetCenter()).GetLengthSq();
+				game_over_ = true;
+			}
+			if (paddle.DoBallCollision(a_ball))
+			{
+				padSound.Play();
+			}
+			paddle.DoWallCollision(walls_.get_inner_bounds());
 
-				if (collision_happened)
+
+			bool collision_happened = false;
+			float cur_col_dist_sq;
+			int cur_col_index;
+
+			for (int i = 0; i < nBricks; i++)
+			{
+				if (bricks[i].CheckBallCollision(a_ball))
 				{
-					if (new_col_dist_sq > cur_col_dist_sq)
+					const float new_col_dist_sq = (a_ball.GetPos() - bricks[i].GetCenter()).GetLengthSq();
+
+					if (collision_happened)
+					{
+						if (new_col_dist_sq > cur_col_dist_sq)
+						{
+							cur_col_dist_sq = new_col_dist_sq;
+							cur_col_index = i;
+						}
+					}
+					else
 					{
 						cur_col_dist_sq = new_col_dist_sq;
 						cur_col_index = i;
+						collision_happened = true;
 					}
 				}
-				else
-				{
-					cur_col_dist_sq = new_col_dist_sq;
-					cur_col_index = i;
-					collision_happened = true;
-				}
 			}
+			if (collision_happened)
+			{
+				bricks[cur_col_index].ExecuteBallCollision(a_ball);
+				brickSound.Play();
+			}
+			paddle.reset_cooldown();
 		}
-		if (collision_happened)
-		{
-			bricks[cur_col_index].ExecuteBallCollision(a_ball);
-			brickSound.Play();
-		}
-		paddle.reset_cooldown();
 	}
 }
 
 void Game::ComposeFrame()
 {
-	a_ball.Draw(gfx);
-	paddle.Draw(gfx);
-	walls_.draw_wall(gfx);
-	for (const Brick& b : bricks)
+	if (!game_is_started_)
 	{
-		b.Draw(gfx);
+		SpriteCodex::draw_title(80, 100, gfx);
+	}
+	else if (!game_over_)
+	{
+		a_ball.Draw(gfx);
+		paddle.Draw(gfx);
+		walls_.draw_wall(gfx);
+		for (const Brick& b : bricks)
+		{
+			b.Draw(gfx);
+		}
+	}
+	else
+	{
+		SpriteCodex::draw_game_over(80, 100, gfx);
 	}
 }

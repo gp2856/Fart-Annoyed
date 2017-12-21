@@ -65,5 +65,6 @@ private:
 	Brick bricks[nBricks];
 
 	bool game_over_ = false;
+	bool game_is_started_ = false;
 	int collision_type_ = -1;
 };
